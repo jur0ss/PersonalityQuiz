@@ -74,7 +74,46 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleY="0.6"
-                android:scaleX="0.6"/>
+                android:scaleX="0.6"
+                android:layout_marginTop="-90dp"
+                android:layout_marginBottom="-50dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Co lubisz robić w wolnym czasie?"
+                android:textSize="20sp"/>
+
+            <CheckBox
+                android:id="@+id/reading_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Czytać"/>
+
+            <CheckBox
+                android:id="@+id/drawing_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rysować"/>
+
+            <CheckBox
+                android:id="@+id/sport_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Uprawiać sport"/>
+
+            <CheckBox
+                android:id="@+id/computer_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Grać na komputerze"/>
+
+            <CheckBox
+                android:id="@+id/nature_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Spędzać czas w naturze"/>
+
 
 
 
