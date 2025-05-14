@@ -128,6 +128,7 @@
                 android:layout_marginTop="20sp"/>
 
             <SeekBar
+                android:id="@+id/seekBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:max="10"
@@ -136,6 +137,12 @@
                 android:progressTint="@color/black"
                 android:minWidth="100dp"
                 />
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jaki kolor najbardziej do Ciebie pasuje?"/>
 
             <Spinner
                 android:id="@+id/spinnerColours"
@@ -147,7 +154,7 @@
                 />
 
             <Chronometer
-                android:id="@+id/myChronometr"
+                android:id="@+id/chronometer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
