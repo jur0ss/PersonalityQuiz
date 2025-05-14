@@ -27,6 +27,12 @@
                 android:textSize="23sp"
                 android:layout_margin="20dp"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jaka jest twoja ulubiona pora roku?"
+                android:textSize="17sp"/>
+
             <RadioGroup
                 android:id="@+id/seasons_radiogroup"
                 android:layout_width="wrap_content"
@@ -129,6 +135,79 @@
                 android:progressTint="@color/black"
                 android:minWidth="100dp"
                 />
+
+            <Spinner
+                android:id="@+id/spinnerColours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:popupBackground="#E28E3C"
+                android:background="#F44336"
+                />
+
+            <Chronometer
+                android:id="@+id/myChronometr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:layout_margin="20dp"
+                android:layout_gravity="center"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                >
+
+                <Button
+                    android:id="@+id/startButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="start"
+                    android:layout_margin="10dp"
+                    android:backgroundTint="#123abc"
+                    />
+                <Button
+                    android:id="@+id/stopButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="stop"
+                    android:layout_margin="10dp"
+                    android:backgroundTint="#4CAF50"
+                    />
+
+            </LinearLayout>
+            <Button
+                android:id="@+id/resetButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="reset"
+                android:layout_gravity="center"
+                android:backgroundTint="#9C27B0"
+                />
+
+            <TextView
+                android:id="@+id/timerCounter"
+                android:layout_marginTop="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pozostało 7 sekund"
+                android:textSize="20sp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="8dp"
+                android:background="@android:color/holo_orange_dark" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Zakończ quiz"
+                android:layout_margin="20dp"/>
 
 
 
