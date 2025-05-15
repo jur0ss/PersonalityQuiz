@@ -2,6 +2,7 @@ package com.example.personalityquiz
 
 import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.SystemClock
 import android.util.Log
 import android.view.View
@@ -22,6 +23,11 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.personalityquiz.R
+import android.graphics.Color
+import android.widget.LinearLayout
+import android.widget.TextView
+import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -32,6 +38,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var resetBtn: Button
     private var running = false
     private var pauseOffset: Long = 0
+
+    lateinit var timerTextView: TextView
+    lateinit var mainLayout: LinearLayout
 
 
 
@@ -161,6 +170,21 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+
+        timerTextView = findViewById(R.id.timerCounter)
+
+        val countDownTimer: CountDownTimer = object : CountDownTimer(7000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val secondsLeft = millisUntilFinished / 1000
+                timerTextView.text = "Pozostało $secondsLeft sekund"
+            }
+
+            override fun onFinish() {
+
+            }
+        }
+
+        countDownTimer.start()
 
 
 
