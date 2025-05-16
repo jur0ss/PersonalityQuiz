@@ -1,20 +1,36 @@
 package com.example.personalityquiz
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class SummaryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_summary)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
+        val season = intent.getStringExtra("season") ?: "Brak"
+        val hobbies = intent.getStringArrayListExtra("hobbies") ?: arrayListOf()
+        val seekValue = intent.getIntExtra("seekBarValue", 0)
+        val color = intent.getStringExtra("color") ?: "Brak"
+        val date = intent.getStringExtra("date") ?: "Brak"
+        val time = intent.getStringExtra("time") ?: "Brak"
+
+        val summaryText = """
+            Wybrana pora roku: $season
+            
+            Zainteresowania: ${hobbies.joinToString(", ")}
+            
+            Poziom emocji (seekBar): $seekValue
+            
+            Ulubiony kolor: $color
+            
+            Wybrana data: $date
+            
+            Wybrany czas: $time
+        """.trimIndent()
+
+        val summaryTextView = findViewById<TextView>(R.id.summaryTextView)
+        summaryTextView.text = summaryText
     }
 }

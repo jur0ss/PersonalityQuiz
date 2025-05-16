@@ -1,36 +1,20 @@
 package com.example.personalityquiz
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.SystemClock
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.Chronometer
-import android.widget.DatePicker
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.SeekBar
-import android.widget.Spinner
-import android.widget.TimePicker
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.personalityquiz.R
-import android.graphics.Color
-import android.widget.LinearLayout
-import android.widget.TextView
-import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
-    @RequiresApi(Build.VERSION_CODES.O)
 
     private lateinit var chronometer: Chronometer
     private lateinit var startBtn: Button
@@ -39,30 +23,26 @@ class MainActivity : AppCompatActivity() {
     private var running = false
     private var pauseOffset: Long = 0
 
-    lateinit var timerTextView: TextView
-    lateinit var mainLayout: LinearLayout
-
-
+    private lateinit var selectedSeason: String
+    private lateinit var timerTextView: TextView
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        chronometer = findViewById<Chronometer>(R.id.chronometer)
-        startBtn = findViewById(R.id.startButton)
-        stopBtn = findViewById(R.id.stopButton)
-        resetBtn = findViewById(R.id.resetButton)
+
+        chronometer = findViewById(R.id.chronometer)
 
 
         startBtn.setOnClickListener {
-
             if (!running) {
                 chronometer.base = SystemClock.elapsedRealtime() - pauseOffset
                 chronometer.start()
@@ -73,7 +53,6 @@ class MainActivity : AppCompatActivity() {
         stopBtn.setOnClickListener {
             if (running) {
                 pauseOffset = SystemClock.elapsedRealtime() - chronometer.base
-                Log.i("offset", "pauseOffset: $pauseOffset")
                 chronometer.stop()
                 running = false
             }
@@ -81,117 +60,79 @@ class MainActivity : AppCompatActivity() {
 
         resetBtn.setOnClickListener {
             chronometer.base = SystemClock.elapsedRealtime()
-            Log.i("offset", "base: ${chronometer.base}")
             pauseOffset = 0
             chronometer.stop()
             running = false
         }
 
 
-
-
         val radioGroup: RadioGroup = findViewById(R.id.seasons_radiogroup)
-
+        selectedSeason = "Wiosna" // domyślnie
         radioGroup.setOnCheckedChangeListener { _, checkedId ->
-            val selectedSeason = when (checkedId) {
+            selectedSeason = when (checkedId) {
                 R.id.spring_radio -> "Wiosna"
                 R.id.summer_radio -> "Lato"
                 R.id.autumn_radio -> "Jesień"
                 else -> "Zima"
             }
-
         }
+
 
         val datePicker: DatePicker = findViewById(R.id.datepicker)
-        datePicker.setOnDateChangedListener { view, year, monthOfYear, dayOfMonth ->
-            val selectedDate = "$dayOfMonth/${monthOfYear + 1}/$year"
-        }
+
 
         val timePicker = findViewById<TimePicker>(R.id.timepicker)
         timePicker.setIs24HourView(true)
 
-        timePicker.setOnTimeChangedListener { view, hour, minute ->
-            val selectedTime = "$hour:$minute"
-        }
 
-        var reading = findViewById<CheckBox>(R.id.reading_check)
-        var drawing = findViewById<CheckBox>(R.id.drawing_check)
-        var sport = findViewById<CheckBox>(R.id.sport_check)
-        var computer = findViewById<CheckBox>(R.id.computer_check)
-        var nature = findViewById<CheckBox>(R.id.nature_check)
+        val seekBar = findViewById<SeekBar>(R.id.seekBar)
 
-        var selectedOptions = mutableListOf<String>()
-
-        if (reading.isChecked) selectedOptions.add("Czytanie")
-        if (drawing.isChecked) selectedOptions.add("Rysowanie")
-        if (sport.isChecked) selectedOptions.add("Sport")
-        if (computer.isChecked) selectedOptions.add("Granie na komputerze")
-        if (nature.isChecked) selectedOptions.add("Natura")
-
-
-        var seekBar = findViewById<SeekBar>(R.id.seekBar)
-
-        seekBar.setOnSeekBarChangeListener(object:SeekBar.OnSeekBarChangeListener{
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                var emotions = "$progress"
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-            }
-        })
 
         val spinner: Spinner = findViewById(R.id.spinnerColours)
         val colours = arrayOf("Niebieski", "Czerwony", "Zielony", "Żółty")
-
-        val adapter = ArrayAdapter( this,
-            android.R.layout.simple_list_item_1,
-            colours
-        )
-
+        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, colours)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                val selectedColour = colours[position]
-                Toast.makeText(this@MainActivity, "Wybrałeś: $selectedColour", Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("Not yet implemented")
-            }
-
-        }
 
         timerTextView = findViewById(R.id.timerCounter)
-
-        val countDownTimer: CountDownTimer = object : CountDownTimer(7000, 1000) {
+        val countDownTimer = object : CountDownTimer(21000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val secondsLeft = millisUntilFinished / 1000
                 timerTextView.text = "Pozostało $secondsLeft sekund"
             }
 
             override fun onFinish() {
-
+                timerTextView.text = "Czas minął!"
             }
         }
-
         countDownTimer.start()
 
 
+        val btnOpenNewActivity: Button = findViewById(R.id.submit_button)
+        btnOpenNewActivity.setOnClickListener {
+            val selectedOptions = mutableListOf<String>()
+            if (findViewById<CheckBox>(R.id.reading_check).isChecked) selectedOptions.add("Czytanie")
+            if (findViewById<CheckBox>(R.id.drawing_check).isChecked) selectedOptions.add("Rysowanie")
+            if (findViewById<CheckBox>(R.id.sport_check).isChecked) selectedOptions.add("Sport")
+            if (findViewById<CheckBox>(R.id.computer_check).isChecked) selectedOptions.add("Granie na komputerze")
+            if (findViewById<CheckBox>(R.id.nature_check).isChecked) selectedOptions.add("Natura")
 
+            val seekValue = seekBar.progress
+            val selectedColor = spinner.selectedItem.toString()
+            val selectedDate = "${datePicker.dayOfMonth}/${datePicker.month + 1}/${datePicker.year}"
+            val selectedTime = "${timePicker.hour}:${timePicker.minute}"
 
+            val intent = Intent(this, SummaryActivity::class.java).apply {
+                putExtra("season", selectedSeason)
+                putStringArrayListExtra("hobbies", ArrayList(selectedOptions))
+                putExtra("seekBarValue", seekValue)
+                putExtra("color", selectedColor)
+                putExtra("date", selectedDate)
+                putExtra("time", selectedTime)
+            }
 
-
-
-
+            startActivity(intent)
+        }
     }
 }
